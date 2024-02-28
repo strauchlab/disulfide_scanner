@@ -1,0 +1,32 @@
+starting_pdbs_dir = /example/1.relax_density/output
+starting_unrelaxed_pdb_dir = /example/1.relax_density/input/7tn1_F_clean.pdb
+designs_dir = /example/3.relax_disulfides/output/relaxed_disulfides
+geometry_highResolution = /example/4.selection/input/geometry_high_resolution.pkl
+pdb_post = 3rrt_post_aligned.pdb
+post_monomer_ch = A 
+pre_monomer_ch = F
+alignment = alignment_pre_post.fasta
+post_name_alignment= 3rrt_post_aligned
+pre_name_alignment= 7tn1_F_clean
+
+
+
+############# Arguments description
+## starting_pdbs_dir = Directory containing all starting models (PDBs after density-guided relaxation). Make sure the directory contains only the relaxed models.
+## starting_unrelaxed_pdb_dir = The full path to the PDB structure used to start the density-guided relaxation.
+## designs_dir = Directory containing PDBs with designed and refined disulfides. 
+## geometry_highResolution = The full path to the file (.pkl format) containing the geometric analysis conducted on the high-resolution dataset.
+## pdb_post = File name or full path of postfusion pdb (the pdb should have been previously aligned with the starting prefusion structure).
+## post_monomer_ch = Chain(s) ID of one postfusion protomer.
+## pdb_pre_ref = File name or full path of starting (reference) prefusion pdb (the pdb should have been previously aligned with the postfusion structure).
+## pre_monomer_ch = Chain(s) ID of one prefusion protomer.
+## alignment = File name or full path of sequence alignment between prefusion and postfusion (the sequences should contain ONLY amino acids found in the PDB structure (monomer sequence). FASTA format.
+## post_name_alignment = Name of postfusion protein in alignment file.
+## pre_name_alignment = Name of starting prefusion protein in alignment file.
+
+
+
+
+
+
+

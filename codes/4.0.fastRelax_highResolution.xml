@@ -1,0 +1,26 @@
+<ROSETTASCRIPTS>
+	<SCOREFXNS>
+		<ScoreFunction name="ref2015_cst" weights="ref2015">
+			<Reweight scoretype="atom_pair_constraint" weight="1.0"/>
+		</ScoreFunction>
+	</SCOREFXNS>
+	<TASKOPERATIONS>
+		<InitializeFromCommandline name="init_commandline"/>
+		<ExtraRotamersGeneric name="ex1_ex2" ex1="1" ex2="1"/>
+		<IncludeCurrent name="current"/>
+		<NoRepackDisulfides name="exemptdisulf"/>
+	</TASKOPERATIONS>
+	<MOVERS>
+		<AddConstraintsToCurrentConformationMover name="pair_cst" use_distance_cst="1" min_seq_sep="0" max_distance="9"/>
+		<FastRelax name="fast_relax" scorefxn="ref2015_cst" repeats="3" task_operations="init_commandline,ex1_ex2,current,exemptdisulf" >
+			<MoveMap name="moveMap" bb="1" chi="1" />
+		</FastRelax>
+		<ClearConstraintsMover name="clearcst"/>
+	</MOVERS>
+	<PROTOCOLS>
+		<Add mover="pair_cst"/>
+		<Add mover="fast_relax"/>
+		<Add mover_name="clearcst"/>
+	</PROTOCOLS>
+	<OUTPUT scorefxn="ref2015_cst"/>
+</ROSETTASCRIPTS>

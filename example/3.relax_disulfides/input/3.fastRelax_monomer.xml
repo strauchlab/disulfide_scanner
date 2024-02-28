@@ -1,0 +1,45 @@
+<ROSETTASCRIPTS>
+	<SCOREFXNS>
+		<ScoreFunction name="ref2015" weights="ref2015" symmetric="0"/>
+	</SCOREFXNS>
+	<RESIDUE_SELECTORS>
+		<Index name="disulf" resnums="%%res1%%,%%res2%%"/> #Residues forming disulfide bond.
+		<Neighborhood name="neighbors" selector="disulf" distance="10"/> #Neighbors 10 angs around of disulfide bond.
+		<Not name="outside" selector="neighbors"/> #Residues outside of disulfide neighborhood.
+
+		<Index name="res1" resnums="%%res1%%"/> #First residue forming disulfide bond.
+		<Index name="res2" resnums="%%res2%%"/> #Second residue forming disulfide bond.
+		<PrimarySequenceNeighborhood name="bb_move1" selector="res1" lower="10" upper="10" /> #Residues preceding and following, in sequence space, the first residue in the disulfide pair.
+		<PrimarySequenceNeighborhood name="bb_move2" selector="res2" lower="10" upper="10" /> #Residues preceding and following, in sequence space, the second residue in the disulfide pair.
+		<Or name="bb_movement" selectors="bb_move1,bb_move2" />
+	</RESIDUE_SELECTORS>
+
+	<MOVE_MAP_FACTORIES> # Allow sidechain and backbone minimization in residues preceding and following, in sequence space, the disulfide pair.
+		<MoveMapFactory name="global" chi="false" bb="false"> 
+		<Chi residue_selector="bb_movement"/>  
+		<Backbone residue_selector="bb_movement"/> 
+		</MoveMapFactory>
+	</MOVE_MAP_FACTORIES>
+
+	<TASKOPERATIONS>
+		<InitializeFromCommandline name="init"/>
+		<LimitAromaChi2 name="limitchi2" chi2max="110" chi2min="70" include_trp="True"/>
+		<OperateOnResidueSubset name="repackonly" selector="neighbors"> #Repack only neighborhood around disulfide pair.
+			<RestrictToRepackingRLT/>
+		</OperateOnResidueSubset>
+		<OperateOnResidueSubset name="norepack" selector="outside">
+			<PreventRepackingRLT/>
+		</OperateOnResidueSubset>
+	</TASKOPERATIONS>
+
+	<MOVERS>
+		<FastRelax name="relax" relaxscript="MonomerRelax2019" scorefxn="ref2015" task_operations="init,limitchi2,repackonly,norepack" repeats="5" movemap_factory="global"/>
+	</MOVERS>
+
+	<PROTOCOLS>
+		<Add mover="relax" />
+	</PROTOCOLS>
+	<OUTPUT scorefxn="ref2015" />
+</ROSETTASCRIPTS>
+
+
